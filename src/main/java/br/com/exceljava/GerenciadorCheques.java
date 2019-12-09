@@ -28,7 +28,7 @@ public class GerenciadorCheques {
 		List<Cheque> cheques = new ArrayList<>(); 
 		
 		//Recuperando o arquivo
-	@Cleanup FileInputStream file = new FileInputStream("olhovivo.xls");
+	@Cleanup FileInputStream file = new FileInputStream("Relatorio.xls");
 
 		workbook = new HSSFWorkbook (file);
 		//setando a aba
