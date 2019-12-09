@@ -36,19 +36,47 @@ public class GerenciadorCheques {
 	// setando as linhas
 		List<Row> rows = (List<Row>) toList(sheet.iterator());
 		
+		Row cabecalho = rows.get(0); // Pego o cabeçalho na Linha 0
+		List<Cell> celulas = (List<Cell>) toList(cabecalho.cellIterator()); // Crio uma lista de células
+		
+		
+		Integer cnpjIndex = null;
+		Integer valorTotalIndex = null;
+		Integer totalFaturadoIndex = null;
+		
+
+		for (Cell cell : celulas) {
+
+			switch (cell.getStringCellValue()) {
+			case "CNPJ":
+				cnpjIndex = cell.getColumnIndex();
+				break;
+			case "R$ Total":
+				valorTotalIndex = cell.getColumnIndex();
+				break;
+			case "Total faturado":
+				totalFaturadoIndex = cell.getColumnIndex();
+				break;
+			
+			}
+		}
+			
+		
+		
 		//remove os cabecalho
 		rows.remove(0);
 		
-		rows.forEach(row ->{
+		
+		for(Row row: rows){
 			//Seteando as celulas
 			List<Cell> cells = (List<Cell>) toList(row.cellIterator());
 			
 			Cheque cheque = Cheque.builder()
 					
 					//Atribuiu os valores para classe chaque
-					.cnpj(cells.get(3).getStringCellValue())
-					.valorTotal(new BigDecimal(cells.get(10).getNumericCellValue()).setScale(2,BigDecimal.ROUND_HALF_EVEN))
-					.totalFaturado(new Integer((int) cells.get(11).getNumericCellValue()))
+					.cnpj(cells.get(cnpjIndex).getStringCellValue())
+					.valorTotal(new BigDecimal(cells.get(valorTotalIndex).getNumericCellValue()).setScale(2,BigDecimal.ROUND_HALF_EVEN))
+					.totalFaturado(new Integer((int) cells.get(totalFaturadoIndex).getNumericCellValue()))
 					
 					
 					
@@ -58,7 +86,7 @@ public class GerenciadorCheques {
 			
 			
 			 
-		});
+		}
 	
 		
 		return cheques;
